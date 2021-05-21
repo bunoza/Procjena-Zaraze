@@ -1,0 +1,35 @@
+<resources>
+    <!-- Reply Preference -->
+    <string-array name="reply_entries">
+        <item>3 sekunde</item>
+        <item>5 minuta</item>
+        <item>10 minuta</item>
+        <item>15 minuta</item>
+        <item>30 minuta</item>
+        <item>60 minuta</item>
+    </string-array>
+
+    <string-array name="reply_values">
+        <item>3</item>
+        <item>300</item>
+        <item>600</item>
+        <item>900</item>
+        <item>1800</item>
+        <item>3600</item>
+
+    </string-array>
+
+    <string-array name="delete_interval">
+        <item>3 sekunde</item>
+        <item>12 sati</item>
+        <item>24 sati</item>
+        <item>48 sati</item>
+    </string-array>
+
+    <string-array name="delete_intervalValue">
+        <item>3000</item>
+        <item>43200000</item>
+        <item>86400000</item>
+        <item>172800000</item>
+    </string-array>
+</resources>

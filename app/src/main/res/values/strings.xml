@@ -1,0 +1,169 @@
+<resources>
+    <string name="app_name">Procjena Zaraze</string>
+    <string name="title_home">Početna</string>
+    <string name="title_covid">Covid</string>
+    <string name="title_location">Lokacije</string>
+    <!-- Preference Titles -->
+    <string name="lokacija">Lokacija</string>
+    <string name="sync_header">Sync</string>
+
+    <!-- Messages Preferences -->
+    <string name="signature_title">Your signature</string>
+    <string name="reply_title">Default reply action</string>
+
+    <!-- Sync Preferences -->
+    <string name="sync_title">Sync email periodically</string>
+    <string name="attachment_title">Download incoming attachments</string>
+    <string name="attachment_summary_on">Automatically download attachments for incoming emails
+    </string>
+    <string name="attachment_summary_off">Only download attachments when manually requested</string>
+
+    <string name="title_activity_scrolling">Unos podataka</string>
+    <string name="action_settings">Settings</string>
+    <string name="ime">Ime</string>
+    <string name="prezime">Prezime</string>
+    <string name="m">M</string>
+    <string name="z">Ž</string>
+    <string name="ne_elim_se_izjasniti">Ne želim se izjasniti</string>
+    <string name="spol">Spol:</string>
+    <string name="datum_ro_enja">Datum rođenja:</string>
+    <string name="pu_enje">Pušite?</string>
+    <string name="da">Da</string>
+    <string name="ne">Ne</string>
+    <string name="astma">Imate astmu?</string>
+    <string name="koristite_lijekove_koji_naru_avaju_imunitet">Koristite lijekove koji narušavaju imunitet?</string>
+    <string name="posao">Posao:</string>
+    <string name="nastavi">Nastavi</string>
+    <string name="dobar_dan">Dobar dan, %1$s</string>
+    <string name="slucajevi_u_hr">"Broj novozaraženih: %1$d"</string>
+    <string name="ozdravljeni_hr">"Broj ozdravljenih: %1$d"</string>
+    <string name="umrli_hr">"Broj umrlih: %1$d"</string>
+    <string name="zarazeni_obz">Broj novozaraženih: %1$d</string>
+    <string name="ozdravljeni_obz">Broj ozdravljenih: %1$d</string>
+    <string name="umrli_obz">Broj umrlih: %1$d</string>
+    <string name="u_itavanje_podataka">Učitavanje podataka</string>
+    <string name="odaberi_upaniju">Odaberi županiju:</string>
+    <string name="notification_title">Procjena zaraze</string>
+    <string name="notification_message">Praćenje lokacije u tijeku</string>
+
+
+    <string-array name="poslovi_array">
+        <item>Administracija</item>
+        <item>Arhitektura</item>
+        <item>Botanika</item>
+        <item>Dizajn</item>
+        <item>Financije</item>
+        <item>Fitness</item>
+        <item>Komercijalist</item>
+        <item>Kuhar</item>
+        <item>Ljudski resursi</item>
+        <item>Maloprodaja</item>
+        <item>Marketing</item>
+        <item>Mediji</item>
+        <item>Menadžment</item>
+        <item>Nekretnine</item>
+        <item>Obrazovanje</item>
+        <item>Odvjetnik</item>
+        <item>Osiguranje</item>
+        <item>Pisanje</item>
+        <item>Prevođenje</item>
+        <item>Proizvodnja</item>
+        <item>Salon za ljepotu</item>
+        <item>Služba za korisnike</item>
+        <item>Software</item>
+        <item>Spa</item>
+        <item>Sustavi i mreže</item>
+        <item>TV/Film/Video</item>
+        <item>Tehnička podrška</item>
+        <item>Transport</item>
+        <item>Umjetnost</item>
+        <item>Veleprodaja</item>
+        <item>Vlada/Sabor</item>
+        <item>Web dizajn</item>
+        <item>Zdravstvo</item>
+    </string-array>
+
+    <string-array name="posloviValues_array">
+        <item>5</item>
+        <item>4</item>
+        <item>2</item>
+        <item>5</item>
+        <item>3</item>
+        <item>15</item>
+        <item>10</item>
+        <item>5</item>
+        <item>10</item>
+        <item>20</item>
+        <item>6</item>
+        <item>10</item>
+        <item>10</item>
+        <item>10</item>
+        <item>20</item>
+        <item>10</item>
+        <item>7</item>
+        <item>2</item>
+        <item>2</item>
+        <item>5</item>
+        <item>10</item>
+        <item>5</item>
+        <item>3</item>
+        <item>7</item>
+        <item>7</item>
+        <item>5</item>
+        <item>7</item>
+        <item>20</item>
+        <item>5</item>
+        <item>20</item>
+        <item>15</item>
+        <item>3</item>
+        <item>30</item>
+    </string-array>
+
+    <string-array name="zupanije">
+        <item>Bjelovarsko-bilogorska</item>
+        <item>Brodsko-posavska</item>
+        <item>Dubrovačko-neretvanska</item>
+        <item>Grad Zagreb</item>
+        <item>Istarska</item>
+        <item>Karlovačka</item>
+        <item>Koprivničko-križevačka</item>
+        <item>Krapinsko-zagorska</item>
+        <item>Ličko-senjska</item>
+        <item>Međimurska</item>
+        <item>Osječko-baranjska</item>
+        <item>Požeško-slavonska</item>
+        <item>Primorsko-goranska</item>
+        <item>Šibensko-kninska</item>
+        <item>Sisačko-moslavačka</item>
+        <item>Splitsko-dalmatinska</item>
+        <item>Varaždinska</item>
+        <item>Virovitičko-podravska</item>
+        <item>Vukovarsko-srijemska</item>
+        <item>Zadarska</item>
+        <item>Zagrebačka</item>
+    </string-array>
+
+    <string-array name="zupanijeValues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+    </string-array>
+</resources>

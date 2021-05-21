@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context=".ScrollingActivity"
+    tools:showIn="@layout/activity_scrolling">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginSize">
+
+
+            <EditText
+                android:id="@+id/etIme"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:inputType="textCapWords"
+                android:hint="@string/ime" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginSize">
+
+
+            <EditText
+                android:id="@+id/etPrezime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:inputType="textCapWords"
+                android:hint="@string/prezime" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginSize">
+
+            <TextView
+                android:id="@+id/tvSpol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSize"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:text="@string/spol"
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginStart="30dp"
+                android:layout_toEndOf="@id/tvSpol">
+
+                <RadioButton
+                    android:id="@+id/musko"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:paddingEnd="@dimen/marginSize"
+                    android:text="@string/m" />
+                <RadioButton
+                    android:id="@+id/zensko"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/marginSize"
+                    android:text="@string/z"/>
+
+                <RadioButton
+                    android:id="@+id/neodredeno"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ostalo"/>
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginSize">
+
+            <TextView
+                android:id="@+id/tvDatum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/marginSize"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:text="@string/datum_ro_enja"
+                />
+        </RelativeLayout>
+
+        <DatePicker
+            android:id="@+id/dpDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginVertical="@dimen/marginSize"
+            android:calendarViewShown="false"
+            android:datePickerMode="spinner" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvPusenje"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSize"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:text="@string/pu_enje"
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginStart="@dimen/marginSize"
+                android:layout_toEndOf="@id/tvPusenje">
+
+                <RadioButton
+                    android:id="@+id/pusenjeDa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    android:paddingHorizontal="@dimen/marginSize"
+                    android:text="@string/da" />
+
+                <RadioButton
+                    android:id="@+id/pusenjeNe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:paddingHorizontal="@dimen/marginSize"
+                    android:text="@string/ne" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginSize">
+
+            <TextView
+                android:id="@+id/tvAstma"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSize"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:text="@string/astma"
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="end"
+                android:layout_marginStart="@dimen/marginSize"
+                android:layout_toEndOf="@id/tvAstma">
+                <RadioButton
+                    android:id="@+id/astmaDa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/marginSize"
+                    android:text="@string/da" />
+
+                <RadioButton
+                    android:id="@+id/astmaNe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:paddingHorizontal="@dimen/marginSize"
+                    android:text="@string/ne" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/marginSize">
+
+            <TextView
+                android:id="@+id/tvLijekovi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSize"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:text="@string/koristite_lijekove_koji_naru_avaju_imunitet" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/tvLijekovi"
+                android:gravity="end"
+                android:layout_marginStart="@dimen/marginSize">
+                <RadioButton
+                    android:id="@+id/lijekoviDa"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/marginSize"
+                    android:text="@string/da" />
+
+                <RadioButton
+                    android:id="@+id/lijekoviNe"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:paddingHorizontal="@dimen/marginSize"
+                    android:text="@string/ne" />
+            </RadioGroup>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/marginSize">
+
+            <TextView
+                android:id="@+id/tvPosao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/marginSize"
+                android:layout_marginHorizontal="@dimen/marginSize"
+                android:textSize="@dimen/fontSize"
+                android:text="@string/posao"
+                />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/spinnerSize"
+                android:entries="@array/poslovi_array"
+                android:layout_toEndOf="@id/tvPosao"/>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btnNastavi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/marginSize"
+            android:text="@string/nastavi"
+            android:layout_gravity="center"/>
+
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
+</merge>

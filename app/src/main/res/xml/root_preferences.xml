@@ -1,0 +1,63 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory app:title="@string/lokacija">
+
+        <SwitchPreferenceCompat
+            app:key="gpsSwitch"
+            app:title="Prati lokaciju u pozadini" />
+
+        <ListPreference
+            app:entries="@array/reply_entries"
+            app:entryValues="@array/reply_values"
+            app:key="interval"
+            app:defaultValue="3600"
+            app:title="Interval ažuriranja lokacije"
+            app:useSimpleSummaryProvider="true"
+            android:negativeButtonText="Odustani"/>
+        <ListPreference
+            app:entries="@array/delete_interval"
+            app:entryValues="@array/delete_intervalValue"
+            app:key="deleteInterval"
+            app:defaultValue="43200000"
+            app:title="Interval brisanja lokacija"
+            app:useSimpleSummaryProvider="true"
+            android:negativeButtonText="Odustani"/>
+        <Preference
+            app:key="delete"
+            app:title="Obriši lokacije" />
+        <ListPreference
+            app:entries="@array/zupanije"
+            app:entryValues="@array/zupanijeValues"
+            app:key="zupanija"
+            app:defaultValue="10"
+            app:title="Odabir županije"
+            app:useSimpleSummaryProvider="true"
+            android:negativeButtonText="Odustani"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory app:title="Profil">
+
+        <Preference
+            app:key="profil"
+            app:title="Uredi profil" />
+
+    </PreferenceCategory>
+
+<!--    <PreferenceCategory app:title="@string/sync_header">-->
+
+<!--        <SwitchPreferenceCompat-->
+<!--            app:key="sync"-->
+<!--            app:title="@string/sync_title" />-->
+
+<!--        <SwitchPreferenceCompat-->
+<!--            app:dependency="sync"-->
+<!--            app:key="attachment"-->
+<!--            app:summaryOff="@string/attachment_summary_off"-->
+<!--            app:summaryOn="@string/attachment_summary_on"-->
+<!--            app:title="@string/attachment_title" />-->
+
+<!--    </PreferenceCategory>-->
+
+</PreferenceScreen>

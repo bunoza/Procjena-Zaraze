@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+    android:id="@+id/swipe"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context=".ui.covid.CovidFragment"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvCovidHrNovi"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/u_itavanje_podataka"
+            android:textSize="@dimen/fontsize"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            android:id="@+id/tvCovidHrIzlijeceni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/u_itavanje_podataka"
+            android:textSize="@dimen/fontsize"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+        <TextView
+            android:id="@+id/tvCovidHrUmrli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/u_itavanje_podataka"
+            android:textSize="@dimen/fontsize"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+        <TextView
+            android:id="@+id/tvBirajZupaniju"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/odaberi_upaniju"
+            android:textSize="@dimen/fontsize"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_gravity="center"/>
+        <Spinner
+            android:id="@+id/spinnerZupanija"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginHorizontal="@dimen/activity_horizontal_margin"
+            android:entries="@array/zupanije"/>
+        <TextView
+            android:id="@+id/tvCovidZupanijaZarazeni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/u_itavanje_podataka"
+            android:textSize="@dimen/fontsize"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+        <TextView
+            android:id="@+id/tvCovidZupanijaIzlijeceni"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/u_itavanje_podataka"
+            android:textSize="@dimen/fontsize"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+        <TextView
+            android:id="@+id/tvCovidZupanijaUmrli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/u_itavanje_podataka"
+            android:textSize="@dimen/fontsize"
+            android:layout_margin="@dimen/activity_horizontal_margin"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/linearLayout">
+
+        <Button
+            android:id="@+id/btnWeb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Detalji"
+            android:layout_centerHorizontal="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
