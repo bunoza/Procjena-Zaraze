@@ -40,12 +40,24 @@
         android:layout_alignParentBottom="true"
         android:layout_below="@id/text_home">
 
+
+        <TextView
+            android:id="@+id/tvMogucnost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/procjena"
+            android:layout_centerHorizontal="true"
+            android:textSize="20sp"
+            android:layout_marginBottom="@dimen/marginSize"
+            android:text="Mogućnost zaraze:"
+            />
+
         <TextView
             android:id="@+id/procjena"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="100sp"
+            android:textSize="80sp"
             android:fontFamily="sans-serif-condensed"
             />
 
