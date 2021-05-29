@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.preference.PreferenceManager;
 
 import com.bunoza.procjenazaraze2.R;
+import com.bunoza.procjenazaraze2.model.Approximation;
 import com.bunoza.procjenazaraze2.model.CovidDB;
 import com.bunoza.procjenazaraze2.model.LocationsModel;
 import com.bunoza.procjenazaraze2.model.User;
@@ -43,6 +44,8 @@ public class HomeViewModel extends AndroidViewModel {
     MutableLiveData<User> user;
     MutableLiveData<Double> approximation;
     Observer<LocationsModel> observer;
+    Observer<List<Approximation>> approxObserver;
+    MutableLiveData<List<Approximation>> lastApproximations;
     SharedPreferences sharedPreferences;
     Context context;
 
@@ -54,6 +57,7 @@ public class HomeViewModel extends AndroidViewModel {
         covidZup = new MutableLiveData<>();
         user = new MutableLiveData<>();
         approximation = new MutableLiveData<>();
+        lastApproximations = new MutableLiveData<>();
         context = application.getApplicationContext();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
@@ -74,7 +78,6 @@ public class HomeViewModel extends AndroidViewModel {
                 if(covidDB != null){
                     covidHr.setValue(covidDB.hr_zarazeni);
                     covidZup.setValue(covidDB.zup_zarazeni);
-                    setNewApproximation();
                 }
             }
         };
@@ -94,10 +97,19 @@ public class HomeViewModel extends AndroidViewModel {
                 }
             }
         };
+
+        approxObserver = new Observer<List<Approximation>>() {
+            @Override
+            public void onChanged(List<Approximation> approximations) {
+                lastApproximations.setValue(approximations);
+            }
+        };
+
         repo.getLocations().observeForever(observer);
         repo.getLocations().observeForever(observerLocation);
         repo.getLatestCases().observeForever(observerCovid);
         repo.getAll().observeForever(observerUser);
+        repo.getLatestApproximations().observeForever(approxObserver);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -158,7 +170,7 @@ public class HomeViewModel extends AndroidViewModel {
             } else {
                 sum += 25;
             }
-            Log.d(TAG, "setNewApproximation: " + age);
+//            Log.d(TAG, "setNewApproximation: " + age);
 
             if (user.getValue().pusenje) {
                 sum += 10;
@@ -194,7 +206,31 @@ public class HomeViewModel extends AndroidViewModel {
         if(sum >= 999.99){
             sum = 999.90;
         }
-        approximation.setValue(sum/10);
+        sum /=10;
+        approximation.setValue(sum);
+
+
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = formatter.format(new Date(Calendar.getInstance().getTimeInMillis()));
+        Log.d(TAG, "setNewApproximation: " + dateString + " je datum");
+//        Log.d(TAG, "setNewApproximation: " + repo.getApproxDead().get(0).date);
+        if(repo.getApproxDead().size() > 0){
+            if(!dateString.equals(repo.getApproxDead().get(repo.getApproxDead().size()-1).date)){
+                Log.d(TAG, "setNewApproximation: "+ "razlicit datum");
+                repo.insertApprox(new Approximation(sum, dateString));
+            }else if(dateString.equals(repo.getApproxDead().get(repo.getApproxDead().size()-1).date) && sum > repo.getApproxDead().get(repo.getApproxDead().size()-1).value){
+                repo.deleteLastApproximation();
+                Log.d(TAG, "setNewApproximation: "+ "isti datum");
+                repo.insertApprox(new Approximation(sum, dateString));
+            }
+        }else {
+            repo.insertApprox(new Approximation(sum, dateString));
+            Log.d(TAG, "setNewApproximation: "+ "approx umetnut");
+        }
+
+        repo.checkApproxCount();
+
     }
 
     private int getAge(int year, int month, int day){
@@ -236,6 +272,7 @@ public class HomeViewModel extends AndroidViewModel {
         repo.getLocations().removeObserver(observer);
         repo.getLatestCases().removeObserver(observerCovid);
         repo.getAll().removeObserver(observerUser);
+        repo.getLatestApproximations().removeObserver(approxObserver);
         super.onCleared();
     }
 

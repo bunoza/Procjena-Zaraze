@@ -1,6 +1,7 @@
 package com.bunoza.procjenazaraze2.ui.home;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,17 +20,17 @@ import androidx.preference.PreferenceManager;
 
 import com.bunoza.procjenazaraze2.MainActivity;
 import com.bunoza.procjenazaraze2.R;
+import com.bunoza.procjenazaraze2.model.Approximation;
 import com.bunoza.procjenazaraze2.model.User;
 import com.bunoza.procjenazaraze2.repo.Repository;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private HomeViewModel homeViewModel;
     private static final String TAG = "HOMEFRAGMENT";
-    TextView location, covidHR, covidZUP, procjena;
+    TextView location, covidHR, covidZUP, procjena, prosjek, preporuka;
     SharedPreferences sharedPreferences;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -52,11 +53,38 @@ public class HomeFragment extends Fragment {
         covidHR = view.findViewById(R.id.tvCovidDanasHR);
         covidZUP = view.findViewById(R.id.tvCovidDanasZUP);
         procjena = view.findViewById(R.id.procjena);
+        prosjek = view.findViewById(R.id.tvProsjek);
+        preporuka = view.findViewById(R.id.tvPreporuka);
 
         homeViewModel.getApproximation().observe(getViewLifecycleOwner(), new Observer<Double>() {
             @Override
             public void onChanged(Double aDouble) {
                 procjena.setText(String.format("%.2f%%", aDouble));
+                setValidColor(aDouble);
+            }
+        });
+        homeViewModel.lastApproximations.observe(getViewLifecycleOwner(), new Observer<List<Approximation>>() {
+            @Override
+            public void onChanged(List<Approximation> approximations) {
+                Double sum = 0.0;
+                for(int i = 0; i < approximations.size(); i++){
+                    sum += approximations.get(i).value;
+                }
+                if(approximations.size() == 1){
+                    prosjek.setText(String.format("Prosjek procjene zaraze unazad %d dan: %.2f%%", approximations.size(), sum / approximations.size()));
+                }else{
+                    prosjek.setText(String.format("Prosjek procjene zaraze unazad %d dana: %.2f%%",approximations.size(), sum/approximations.size()));
+                }
+                if(sum / approximations.size() < 15){
+                    preporuka.setText(getResources().getString(R.string.nizak_prosjek));
+                    preporuka.setTextColor(Color.rgb(0,200,0));
+                }else if( sum/approximations.size() < 40){
+                    preporuka.setText(getResources().getString(R.string.medium_prosjek));
+                    procjena.setTextColor(Color.rgb(255,165,0));
+                }else{
+                    preporuka.setText(getResources().getString(R.string.high_prosjek));
+                    procjena.setTextColor(Color.RED);
+                }
             }
         });
         homeViewModel.getLastLocation().observe(getViewLifecycleOwner(), new Observer<String>() {
@@ -88,18 +116,22 @@ public class HomeFragment extends Fragment {
 //        homeViewModel.checkTimestamps();
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, "onStart: ");
-        homeViewModel.repo.getData();
+    private void setValidColor(Double num) {
+        if(num < 15){
+            procjena.setTextColor(Color.rgb(0,200,0));
+        }else if(num < 40){
+            procjena.setTextColor(Color.rgb(255,165,0));
+        }else {
+            procjena.setTextColor(Color.RED);
+        }
     }
+
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onResume() {
         super.onResume();
+        homeViewModel.repo.getData();
         homeViewModel.checkTimestamps();
     }
 }

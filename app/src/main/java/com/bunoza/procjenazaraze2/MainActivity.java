@@ -41,7 +41,6 @@ public class MainActivity extends AppCompatActivity {
         if(repo.isDBnull()){
             repo.initDB(getApplicationContext());
         }
-
         if(repo.getUserCount() != 0 ) {
                 setContentView(R.layout.activity_main);
                 initUI();

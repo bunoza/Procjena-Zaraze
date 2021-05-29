@@ -46,6 +46,10 @@
     <string name="notification_title">Procjena zaraze</string>
     <string name="notification_message">Praćenje lokacije u tijeku</string>
 
+    <string name="nizak_prosjek">Preporuka: Samo tako nastavi!</string>
+    <string name="medium_prosjek">Preporuka: Trebao bi manje izlaziti.</string>
+    <string name="high_prosjek">Preporuka: Potrebno je manje izlaziti i održavati socijalnu distancu.</string>
+
 
     <string-array name="poslovi_array">
         <item>Administracija</item>

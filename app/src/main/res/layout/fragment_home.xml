@@ -61,6 +61,26 @@
             android:fontFamily="sans-serif-condensed"
             />
 
+        <TextView
+            android:id="@+id/tvProsjek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/procjena"
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/marginSize"
+            />
+
+        <TextView
+            android:id="@+id/tvPreporuka"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvProsjek"
+            android:layout_centerHorizontal="true"
+            android:textSize="16sp"
+            android:layout_marginTop="@dimen/marginSize"
+            />
+
     </RelativeLayout>
 
 </RelativeLayout>

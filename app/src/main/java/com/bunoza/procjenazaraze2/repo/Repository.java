@@ -12,12 +12,16 @@ import androidx.room.Room;
 import com.bunoza.procjenazaraze2.api.RetrofitClient;
 import com.bunoza.procjenazaraze2.api.RetrofitInterface;
 import com.bunoza.procjenazaraze2.db.AppDatabase;
+import com.bunoza.procjenazaraze2.model.Approximation;
 import com.bunoza.procjenazaraze2.model.CovidDB;
 import com.bunoza.procjenazaraze2.model.CovidZadnjiPodaci;
 import com.bunoza.procjenazaraze2.model.CovidZadnjiZupanije;
 import com.bunoza.procjenazaraze2.model.LocationsModel;
 import com.bunoza.procjenazaraze2.model.User;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Observer;
 
@@ -178,6 +182,30 @@ public class Repository {
 
     }
 
+    public void insertApprox(Approximation approximation){
+        if(db != null){
+            db.approxDao().insert(approximation);
+        }
+    }
+
+    public List<Approximation> getApproxDead(){
+        return db.approxDao().getAll();
+    }
+
+    public void deleteLastApproximation(){
+        db.approxDao().delete(db.approxDao().getAll().get(db.approxDao().getAll().size()-1));
+    }
+
+    public void checkApproxCount(){
+        if(db.approxDao().getAll().size() > 0){
+            if(db.approxDao().getAll().size() > 7){
+                int diff = db.approxDao().getAll().size() - 7;
+                for(int i = 0; i < diff; i++){
+                    db.approxDao().delete(db.approxDao().getAll().get(0));
+                }
+            }
+        }
+    }
 
 
     public void insertData(LocationsModel locationsModel){
@@ -187,6 +215,10 @@ public class Repository {
 
     public LiveData<CovidDB> getLatestCases(){
         return db.covidDBDao().getAll();
+    }
+
+    public LiveData<List<Approximation>> getLatestApproximations(){
+        return db.approxDao().getAllLive();
     }
 
     public LiveData<LocationsModel> getLocations(){
