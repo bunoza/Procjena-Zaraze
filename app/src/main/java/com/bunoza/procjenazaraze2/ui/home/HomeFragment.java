@@ -132,6 +132,6 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         homeViewModel.repo.getData();
-        homeViewModel.checkTimestamps();
+//        homeViewModel.checkTimestamps();
     }
 }

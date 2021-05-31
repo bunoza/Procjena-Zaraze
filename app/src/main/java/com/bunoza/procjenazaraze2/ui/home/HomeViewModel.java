@@ -218,11 +218,15 @@ public class HomeViewModel extends AndroidViewModel {
         if(repo.getApproxDead().size() > 0){
             if(!dateString.equals(repo.getApproxDead().get(repo.getApproxDead().size()-1).date)){
                 Log.d(TAG, "setNewApproximation: "+ "razlicit datum");
+                repo.deleteLocationData();
+                sum = 0;
                 repo.insertApprox(new Approximation(sum, dateString));
             }else if(dateString.equals(repo.getApproxDead().get(repo.getApproxDead().size()-1).date) && sum > repo.getApproxDead().get(repo.getApproxDead().size()-1).value){
                 repo.deleteLastApproximation();
-                Log.d(TAG, "setNewApproximation: "+ "isti datum");
+                Log.d(TAG, "setNewApproximation: "+ "isti datum i veci iznos");
                 repo.insertApprox(new Approximation(sum, dateString));
+            }else{
+
             }
         }else {
             repo.insertApprox(new Approximation(sum, dateString));

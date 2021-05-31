@@ -65,7 +65,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         gpsSwitch = getPreferenceManager().findPreference("gpsSwitch");
         interval = getPreferenceManager().findPreference("interval");
-        deleteInterval = getPreferenceManager().findPreference("deleteInterval");
+//        deleteInterval = getPreferenceManager().findPreference("deleteInterval");
         delete = getPreferenceManager().findPreference("delete");
         profil = getPreferenceScreen().findPreference("profil");
 
@@ -79,33 +79,33 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         Log.d(TAG, "onCreatePreferences: " + boolean_permission);
 
 
-        deleteInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if(repo.getLocationsDead() != null){
-                    List<String> addresses = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
-                    List<String> timestamps = new ArrayList<>(Arrays.asList(repo.getLocationsDead().timestamp.split("/")));
-                    for (int i = addresses.size() - 1; i >= 0; i--) {
-                        if ((new Date().getTime() - Long.parseLong(timestamps.get(i))) > Long.parseLong(newValue.toString())) {
-                            addresses.remove(i);
-                            timestamps.remove(i);
-                        }
-                    }
-                    if (addresses.size() == 0) {
-                        repo.deleteLocationData();
-                    } else {
-                        String tempAddresses = String.join("/", addresses);
-                        String tempTimestamps = String.join("/", timestamps);
-                        LocationsModel temp = new LocationsModel(tempTimestamps, tempAddresses);
-                        Log.d(TAG, "fn_update: db!=null " + temp.toString());
-                        repo.insertData(temp);
-                    }
-                    return true;
-                }
-                return true;
-            }
-        });
+//        deleteInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.O)
+//            @Override
+//            public boolean onPreferenceChange(Preference preference, Object newValue) {
+//                if(repo.getLocationsDead() != null){
+//                    List<String> addresses = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
+//                    List<String> timestamps = new ArrayList<>(Arrays.asList(repo.getLocationsDead().timestamp.split("/")));
+//                    for (int i = addresses.size() - 1; i >= 0; i--) {
+//                        if ((new Date().getTime() - Long.parseLong(timestamps.get(i))) > Long.parseLong(newValue.toString())) {
+//                            addresses.remove(i);
+//                            timestamps.remove(i);
+//                        }
+//                    }
+//                    if (addresses.size() == 0) {
+//                        repo.deleteLocationData();
+//                    } else {
+//                        String tempAddresses = String.join("/", addresses);
+//                        String tempTimestamps = String.join("/", timestamps);
+//                        LocationsModel temp = new LocationsModel(tempTimestamps, tempAddresses);
+//                        Log.d(TAG, "fn_update: db!=null " + temp.toString());
+//                        repo.insertData(temp);
+//                    }
+//                    return true;
+//                }
+//                return true;
+//            }
+//        });
 
 
 

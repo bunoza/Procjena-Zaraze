@@ -119,6 +119,6 @@ public class LocationFragment extends Fragment implements ClickListener{
     @Override
     public void onResume() {
         super.onResume();
-        locationViewModel.checkTimestamps();
+//        locationViewModel.checkTimestamps();
     }
 }

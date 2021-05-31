@@ -15,14 +15,14 @@
             app:title="Interval ažuriranja lokacije"
             app:useSimpleSummaryProvider="true"
             android:negativeButtonText="Odustani"/>
-        <ListPreference
-            app:entries="@array/delete_interval"
-            app:entryValues="@array/delete_intervalValue"
-            app:key="deleteInterval"
-            app:defaultValue="43200000"
-            app:title="Interval brisanja lokacija"
-            app:useSimpleSummaryProvider="true"
-            android:negativeButtonText="Odustani"/>
+<!--        <ListPreference-->
+<!--            app:entries="@array/delete_interval"-->
+<!--            app:entryValues="@array/delete_intervalValue"-->
+<!--            app:key="deleteInterval"-->
+<!--            app:defaultValue="43200000"-->
+<!--            app:title="Interval brisanja lokacija"-->
+<!--            app:useSimpleSummaryProvider="true"-->
+<!--            android:negativeButtonText="Odustani"/>-->
         <Preference
             app:key="delete"
             app:title="Obriši lokacije" />
