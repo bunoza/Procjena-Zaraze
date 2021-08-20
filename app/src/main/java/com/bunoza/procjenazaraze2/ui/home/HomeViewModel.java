@@ -174,6 +174,14 @@ public class HomeViewModel extends AndroidViewModel {
         if(sum >= 0.999){
             sum = 0.999;
         }
+        if(repo.getLocationsDead() != null){
+            ArrayList<LocationsModel> list = new ArrayList<>(repo.getLocationsDead());
+            if(list.size() == 1 || list.size() == 0){
+                sum = 0;
+            }
+        }else {
+            sum = 0;
+        }
         approximation.setValue(sum*100);
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
