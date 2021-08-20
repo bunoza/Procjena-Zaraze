@@ -20,7 +20,7 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<AddressHolder> {
     Repository repo;
-    Observer<LocationsModel> observer;
+    Observer<List<LocationsModel>> observer;
     public final String TAG = "RecyclerAdapter";
     List<String> raw = new ArrayList<>();
     ClickListener clickListener;
@@ -29,34 +29,28 @@ public class RecyclerAdapter extends RecyclerView.Adapter<AddressHolder> {
     public RecyclerAdapter(ClickListener clickListener) {
         repo = Repository.getInstance();
         this.clickListener = clickListener;
-        observer = new Observer<LocationsModel>() {
-            @Override
-            public void onChanged(LocationsModel locationsModel) {
-                addData(repo.getLocationsDead());
-                notifyDataSetChanged();
-//                Log.d(TAG, "onChanged: " + "CHANGE OBSERVED ADAPTER " + repo.getLocationsDead());
-            }
+        observer = locationsModels -> {
+            addData(repo.getLocationsDead());
+            notifyDataSetChanged();
         };
         repo.getLocations().observeForever(observer);
-
     }
 
-
-    public void addData(LocationsModel locationsModel){
+    public void addData(ArrayList<LocationsModel> locationsModel){
         if(locationsModel != null){
             raw.clear();
             int i;
-            for (i = 0; i < Arrays.asList(locationsModel.address.split("/")).size(); i++) {
-                raw.add(Arrays.asList(locationsModel.address.split("/")).get(i));
+            for(i = 0; i < repo.getLocationsDead().size(); i++){
+                raw.add(repo.getLocationsDead().get(repo.getLocationsDead().size() -1 -i).address);
             }
         }
     }
 
-
     @NonNull
     @Override
     public AddressHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.address_row, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.address_row, parent,
+                false);
         return new AddressHolder(view, clickListener);
     }
 

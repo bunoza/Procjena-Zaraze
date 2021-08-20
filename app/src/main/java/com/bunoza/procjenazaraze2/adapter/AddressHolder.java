@@ -28,3 +28,5 @@ public class AddressHolder extends RecyclerView.ViewHolder  implements View.OnCl
         clickListener.onClick(textView.getText().toString());
     }
 }
+
+

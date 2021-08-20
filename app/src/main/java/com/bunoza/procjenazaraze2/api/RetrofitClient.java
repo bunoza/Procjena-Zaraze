@@ -7,11 +7,9 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-
     private static final String BASE_API =
             "https://www.koronavirus.hr/";
     private static RetrofitInterface retrofitInterface;
-
 
     public static RetrofitInterface getRetrofitInterface() {
         if (retrofitInterface == null) {
@@ -20,9 +18,9 @@ public class RetrofitClient {
                     .baseUrl(BASE_API)
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(new OkHttpClient.Builder()
-                            .connectTimeout(5, TimeUnit.SECONDS)
-                            .readTimeout(5, TimeUnit.SECONDS)
-                            .writeTimeout(5, TimeUnit.SECONDS).build()
+                            .connectTimeout(20, TimeUnit.SECONDS)
+                            .readTimeout(20, TimeUnit.SECONDS)
+                            .writeTimeout(20, TimeUnit.SECONDS).build()
                     )
                     .build();
             retrofitInterface = retrofit.create(RetrofitInterface.class);
@@ -30,3 +28,5 @@ public class RetrofitClient {
         return retrofitInterface;
     }
 }
+
+

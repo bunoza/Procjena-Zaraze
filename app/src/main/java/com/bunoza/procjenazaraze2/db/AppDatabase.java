@@ -17,3 +17,5 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract UserDao userDao();
     public abstract ApproxDao approxDao();
 }
+
+

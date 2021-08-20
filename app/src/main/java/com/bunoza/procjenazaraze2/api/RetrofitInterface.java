@@ -19,3 +19,5 @@ public interface RetrofitInterface {
     @GET("json/?action=po_danima_zupanijama")
     Call<List<CovidZadnjiZupanije>> getByCounty();
 }
+
+

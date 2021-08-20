@@ -1,5 +1,6 @@
 package com.bunoza.procjenazaraze2.ui.home;
 
+import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
@@ -41,13 +42,13 @@ public class HomeFragment extends Fragment {
         return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
+    @SuppressLint({"DefaultLocale", "SetTextI18n"})
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
         Repository repo = Repository.getInstance();
-
 
         location = view.findViewById(R.id.text_home);
         covidHR = view.findViewById(R.id.tvCovidDanasHR);
@@ -56,64 +57,52 @@ public class HomeFragment extends Fragment {
         prosjek = view.findViewById(R.id.tvProsjek);
         preporuka = view.findViewById(R.id.tvPreporuka);
 
-        homeViewModel.getApproximation().observe(getViewLifecycleOwner(), new Observer<Double>() {
-            @Override
-            public void onChanged(Double aDouble) {
-                procjena.setText(String.format("%.2f%%", aDouble));
-                setValidColor(aDouble);
+        homeViewModel.getApproximation().observe(getViewLifecycleOwner(), aDouble -> {
+            procjena.setText(String.format("%.2f%%", aDouble));
+            setValidColor(aDouble);
+        });
+        homeViewModel.lastApproximations.observe(getViewLifecycleOwner(), approximations -> {
+            Double sum = 0.0;
+            for(int i = 0; i < approximations.size(); i++){
+                sum += approximations.get(i).value;
+            }
+            if(approximations.size() == 1){
+                prosjek.setText(String.format("Prosjek procjene zaraze unazad %d dan: %.2f%%",
+                        approximations.size(), 100*sum / approximations.size()));
+                Log.d(TAG, "onViewCreated: " + sum.toString() + ", " + approximations.size() + ", " + sum / approximations.size());
+            }else{
+                prosjek.setText(String.format("Prosjek procjene zaraze unazad %d dana: %.2f%%",
+                        approximations.size(), 100*sum/approximations.size()));
+            }
+            if(100*sum / approximations.size() < 15){
+                preporuka.setText(getResources().getString(R.string.nizak_prosjek));
+                preporuka.setTextColor(Color.rgb(0,200,0));
+            }else if( 100*sum/approximations.size() < 40){
+                preporuka.setText(getResources().getString(R.string.medium_prosjek));
+                procjena.setTextColor(Color.rgb(255,165,0));
+                preporuka.setTextColor(Color.rgb(255,165,0));
+            }else{
+                preporuka.setText(getResources().getString(R.string.high_prosjek));
+                procjena.setTextColor(Color.RED);
+                preporuka.setTextColor(Color.RED);
+                preporuka.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
             }
         });
-        homeViewModel.lastApproximations.observe(getViewLifecycleOwner(), new Observer<List<Approximation>>() {
-            @Override
-            public void onChanged(List<Approximation> approximations) {
-                Double sum = 0.0;
-                for(int i = 0; i < approximations.size(); i++){
-                    sum += approximations.get(i).value;
-                }
-                if(approximations.size() == 1){
-                    prosjek.setText(String.format("Prosjek procjene zaraze unazad %d dan: %.2f%%", approximations.size(), sum / approximations.size()));
-                }else{
-                    prosjek.setText(String.format("Prosjek procjene zaraze unazad %d dana: %.2f%%",approximations.size(), sum/approximations.size()));
-                }
-                if(sum / approximations.size() < 15){
-                    preporuka.setText(getResources().getString(R.string.nizak_prosjek));
-                    preporuka.setTextColor(Color.rgb(0,200,0));
-                }else if( sum/approximations.size() < 40){
-                    preporuka.setText(getResources().getString(R.string.medium_prosjek));
-                    procjena.setTextColor(Color.rgb(255,165,0));
-                }else{
-                    preporuka.setText(getResources().getString(R.string.high_prosjek));
-                    procjena.setTextColor(Color.RED);
-                }
-            }
+        homeViewModel.getLastLocation().observe(getViewLifecycleOwner(), s -> {
+            location.setText(s);
+            Log.d(TAG, "onChanged: " + s);
         });
-        homeViewModel.getLastLocation().observe(getViewLifecycleOwner(), new Observer<String>() {
-            @Override
-            public void onChanged(String s) {
-                location.setText(s);
-                Log.d(TAG, "onChanged: " + s);
-            }
-        });
-        homeViewModel.getCovidHr().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                covidHR.setText("Broj slučajeva danas: " + integer.toString());
-            }
-        });
-        homeViewModel.getCovidZup().observe(getViewLifecycleOwner(), new Observer<Integer>() {
-            @Override
-            public void onChanged(Integer integer) {
-                covidZUP.setText("Broj slučajeva danas u županiji " + (getResources().getStringArray(R.array.zupanije))[Integer.parseInt(sharedPreferences.getString("zupanija", "10"))] + ": " + integer.toString());
-            }
-        });
-        homeViewModel.getUsers().observe(getViewLifecycleOwner(), new Observer<User>() {
-            @Override
-            public void onChanged(User user) {
-                ((MainActivity) getActivity()).getSupportActionBar().setTitle("Dobar dan, " + user.ime);
-            }
-        });
+        homeViewModel.getCovidHr().observe(getViewLifecycleOwner(), integer -> covidHR
+                .setText("Broj slučajeva danas: " + integer.toString()));
+        homeViewModel.getCovidZup().observe(getViewLifecycleOwner(), integer -> covidZUP
+                .setText("Broj slučajeva danas u županiji " +
+                (getResources().getStringArray(R.array.zupanije))
+                        [Integer.parseInt(sharedPreferences
+                        .getString("zupanija", "10"))] + ": " + integer.toString()));
+        homeViewModel.getUsers().observe(getViewLifecycleOwner(), user ->
+                ((MainActivity) getActivity()).getSupportActionBar()
+                        .setTitle("Dobar dan, " + user.ime));
         repo.storeData(Integer.parseInt(sharedPreferences.getString("zupanija", "10")));
-//        homeViewModel.checkTimestamps();
     }
 
     private void setValidColor(Double num) {
@@ -132,6 +121,5 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         homeViewModel.repo.getData();
-//        homeViewModel.checkTimestamps();
     }
 }

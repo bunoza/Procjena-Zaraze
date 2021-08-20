@@ -8,17 +8,23 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import com.bunoza.procjenazaraze2.model.LocationsModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Dao
 public interface LocationsDao {
 
     @Query("SELECT * FROM loc")
-    LiveData<LocationsModel> getAllLive();
+    LiveData<List<LocationsModel>> getAllLive();
 
     @Query("SELECT * FROM loc")
-    LocationsModel getAll();
+    List<LocationsModel> getAll();
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    @Insert
     void insert(LocationsModel locationsModel);
+
+    @Query("DELETE FROM loc")
+    void eraseTableData();
 
     @Delete
     void delete(LocationsModel locationsModel);

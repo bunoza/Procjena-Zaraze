@@ -158,44 +158,44 @@
             </RadioGroup>
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/marginSize">
+<!--        <RelativeLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="@dimen/marginSize">-->
 
-            <TextView
-                android:id="@+id/tvAstma"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/marginSize"
-                android:layout_marginHorizontal="@dimen/marginSize"
-                android:textSize="@dimen/fontSize"
-                android:text="@string/astma"
-                />
+<!--            <TextView-->
+<!--                android:id="@+id/tvAstma"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="@dimen/marginSize"-->
+<!--                android:layout_marginHorizontal="@dimen/marginSize"-->
+<!--                android:textSize="@dimen/fontSize"-->
+<!--                android:text="@string/astma"-->
+<!--                />-->
 
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="end"
-                android:layout_marginStart="@dimen/marginSize"
-                android:layout_toEndOf="@id/tvAstma">
-                <RadioButton
-                    android:id="@+id/astmaDa"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="@dimen/marginSize"
-                    android:text="@string/da" />
+<!--            <RadioGroup-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:gravity="end"-->
+<!--                android:layout_marginStart="@dimen/marginSize"-->
+<!--                android:layout_toEndOf="@id/tvAstma">-->
+<!--                <RadioButton-->
+<!--                    android:id="@+id/astmaDa"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:paddingHorizontal="@dimen/marginSize"-->
+<!--                    android:text="@string/da" />-->
 
-                <RadioButton
-                    android:id="@+id/astmaNe"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="true"
-                    android:paddingHorizontal="@dimen/marginSize"
-                    android:text="@string/ne" />
-            </RadioGroup>
-        </RelativeLayout>
+<!--                <RadioButton-->
+<!--                    android:id="@+id/astmaNe"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:checked="true"-->
+<!--                    android:paddingHorizontal="@dimen/marginSize"-->
+<!--                    android:text="@string/ne" />-->
+<!--            </RadioGroup>-->
+<!--        </RelativeLayout>-->
 
         <RelativeLayout
             android:layout_width="match_parent"

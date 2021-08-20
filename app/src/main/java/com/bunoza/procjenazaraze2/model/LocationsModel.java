@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity(tableName = "loc")
 public class LocationsModel {
 
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     public int id;
 
     @ColumnInfo(name = "address")
@@ -20,7 +20,6 @@ public class LocationsModel {
 
 
     public LocationsModel(String timestamp, String address) {
-        this.id = 1;
         this.address = address;
         this.timestamp = timestamp;
     }

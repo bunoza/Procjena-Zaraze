@@ -32,6 +32,8 @@ import com.bunoza.procjenazaraze2.model.LocationsModel;
 import com.bunoza.procjenazaraze2.model.User;
 import com.bunoza.procjenazaraze2.repo.Repository;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -65,66 +67,26 @@ public class SettingsFragment extends PreferenceFragmentCompat {
 
         gpsSwitch = getPreferenceManager().findPreference("gpsSwitch");
         interval = getPreferenceManager().findPreference("interval");
-//        deleteInterval = getPreferenceManager().findPreference("deleteInterval");
         delete = getPreferenceManager().findPreference("delete");
         profil = getPreferenceScreen().findPreference("profil");
-
         locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
-
         repo = Repository.getInstance();
-
         intent = new Intent(getActivity(), GoogleService.class);
         Log.d(TAG, "onCreatePreferences: " + boolean_permission);
         fn_permission();
         Log.d(TAG, "onCreatePreferences: " + boolean_permission);
 
 
-//        deleteInterval.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-//            @RequiresApi(api = Build.VERSION_CODES.O)
-//            @Override
-//            public boolean onPreferenceChange(Preference preference, Object newValue) {
-//                if(repo.getLocationsDead() != null){
-//                    List<String> addresses = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
-//                    List<String> timestamps = new ArrayList<>(Arrays.asList(repo.getLocationsDead().timestamp.split("/")));
-//                    for (int i = addresses.size() - 1; i >= 0; i--) {
-//                        if ((new Date().getTime() - Long.parseLong(timestamps.get(i))) > Long.parseLong(newValue.toString())) {
-//                            addresses.remove(i);
-//                            timestamps.remove(i);
-//                        }
-//                    }
-//                    if (addresses.size() == 0) {
-//                        repo.deleteLocationData();
-//                    } else {
-//                        String tempAddresses = String.join("/", addresses);
-//                        String tempTimestamps = String.join("/", timestamps);
-//                        LocationsModel temp = new LocationsModel(tempTimestamps, tempAddresses);
-//                        Log.d(TAG, "fn_update: db!=null " + temp.toString());
-//                        repo.insertData(temp);
-//                    }
-//                    return true;
-//                }
-//                return true;
-//            }
-//        });
-
-
-
-        delete.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-            @Override
-            public boolean onPreferenceClick(Preference preference) {
-                new AlertDialog.Builder(getContext())
-                        .setTitle("Želite obrisati lokacije?")
-                        .setMessage("Obrisani podaci ne mogu se vratiti.")
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                repo.deleteLocationData();
-                            }
-                        })
-                        .setNegativeButton("Odustani", null)
-                        .setIcon(R.drawable.ic_baseline_warning_24)
-                        .show();
-                return false;
-            }
+        delete.setOnPreferenceClickListener(preference -> {
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Želite obrisati lokacije?")
+                    .setMessage("Obrisani podaci ne mogu se vratiti.")
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> repo.
+                            deleteLocationData())
+                    .setNegativeButton("Odustani", null)
+                    .setIcon(R.drawable.ic_baseline_warning_24)
+                    .show();
+            return false;
         });
 
         profil.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -149,38 +111,33 @@ public class SettingsFragment extends PreferenceFragmentCompat {
             }
         });
 
-
-
-        gpsSwitch.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-                if(newValue.equals(true)){
-                    if(getBooleanPermission() ){
-                        if(isGPSEnable){
-                            if (getActivity() != null) {
-                                gpsSwitch.setChecked(true);
-                                getActivity().startService(intent);
-                                Log.d(TAG, "onPreferenceChange: START SERVICE");
-                                return true;
-                            }
-                        }else{
-                            Toast.makeText(getContext(), "Omogućite GPS lokaciju", Toast.LENGTH_SHORT).show();
-                            return false;
+        gpsSwitch.setOnPreferenceChangeListener((preference, newValue) -> {
+            isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if(newValue.equals(true)){
+                if(getBooleanPermission() ){
+                    if(isGPSEnable){
+                        if (getActivity() != null) {
+                            gpsSwitch.setChecked(true);
+                            getActivity().startService(intent);
+                            Log.d(TAG, "onPreferenceChange: START SERVICE");
+                            return true;
                         }
                     }else{
-                        fn_permission();
-                        Toast.makeText(getContext(), "Dozvolite pristup lokaciji", Toast.LENGTH_SHORT).show();
-
+                        Toast.makeText(getContext(), "Omogućite GPS lokaciju", Toast.LENGTH_SHORT).show();
                         return false;
                     }
                 }else{
-                    if(getActivity() != null)
-                        getActivity().stopService(intent);
-                    Log.d(TAG, "onPreferenceChange: STOP SERVICE");
+                    fn_permission();
+                    Toast.makeText(getContext(), "Dozvolite pristup lokaciji", Toast.LENGTH_SHORT).show();
+
+                    return false;
                 }
-                return true;
+            }else{
+                if(getActivity() != null)
+                    getActivity().stopService(intent);
+                Log.d(TAG, "onPreferenceChange: STOP SERVICE");
             }
+            return true;
         });
     }
 
@@ -200,7 +157,6 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         return boolean_permission;
     }
 
-
     private void fn_permission() {
         if ((ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)) {
 
@@ -211,7 +167,8 @@ public class SettingsFragment extends PreferenceFragmentCompat {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NotNull String[] permissions,
+                                           @NotNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (requestCode == REQUEST_PERMISSIONS) {
@@ -219,11 +176,13 @@ public class SettingsFragment extends PreferenceFragmentCompat {
                 boolean_permission = true;
 
             } else {
-                Toast.makeText(getActivity().getApplicationContext(), "Service is already running", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity().getApplicationContext(),
+                        "Service is already running", Toast.LENGTH_SHORT).show();
             }
 
         } else {
-            Toast.makeText(getContext(), "Dozvola je potrebna za dohvaćanje lokacije", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Dozvola je potrebna za dohvaćanje lokacije",
+                    Toast.LENGTH_LONG).show();
 
         }
     }

@@ -26,10 +26,10 @@ import java.util.List;
 
 public class LocationViewModel extends AndroidViewModel {
 
-    private  Observer<LocationsModel> observer;
+    private  Observer<List<LocationsModel>> observer;
     private Repository repo;
     public final String TAG = "LOCATION VIEWMODEL";
-    public MutableLiveData<Boolean> areLocationsPopulated;
+    public MutableLiveData<Boolean> areLocationsPopulated = new MutableLiveData<>();
     Context context;
     SharedPreferences sharedPreferences;
 
@@ -40,40 +40,39 @@ public class LocationViewModel extends AndroidViewModel {
         context = application.getApplicationContext();
         repo = Repository.getInstance();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        areLocationsPopulated = new MutableLiveData<>();
-        observer = new Observer<LocationsModel>() {
+        observer = new Observer<List<LocationsModel>>() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
-            public void onChanged(LocationsModel locationsModel) {
-                areLocationsPopulated.setValue(locationsModel != null);
+            public void onChanged(List<LocationsModel> locationsModel) {
+                areLocationsPopulated.setValue(repo.getLocationsDead() != null && repo.getLocationsDead().size() > 0);
             }
         };
         repo.getLocations().observeForever(observer);
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void checkTimestamps(){
-        if(repo.getLocationsDead() != null){
-            List<String> addresses = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
-            List<String> timestamps = new ArrayList<>(Arrays.asList(repo.getLocationsDead().timestamp.split("/")));
-            for (int i = addresses.size() - 1; i >= 0; i--) {
-                if ((new Date().getTime() - Long.parseLong(timestamps.get(i))) > Long.parseLong(sharedPreferences.getString("deleteInterval", "43200000"))) {
-                    addresses.remove(i);
-                    timestamps.remove(i);
-                }
-            }
-            if (addresses.size() == 0) {
-                repo.deleteLocationData();
-            } else {
-                String tempAddresses = String.join("/", addresses);
-                String tempTimestamps = String.join("/", timestamps);
-                LocationsModel temp = new LocationsModel(tempTimestamps, tempAddresses);
-                Log.d(TAG, "provjera timestamps " + temp.toString());
-                repo.insertData(temp);
-            }
-        }
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public void checkTimestamps(){
+//        if(repo.getLocationsDead() != null){
+//            List<String> addresses = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
+//            List<String> timestamps = new ArrayList<>(Arrays.asList(repo.getLocationsDead().timestamp.split("/")));
+//            for (int i = addresses.size() - 1; i >= 0; i--) {
+//                if ((new Date().getTime() - Long.parseLong(timestamps.get(i))) > Long.parseLong(sharedPreferences.getString("deleteInterval", "43200000"))) {
+//                    addresses.remove(i);
+//                    timestamps.remove(i);
+//                }
+//            }
+//            if (addresses.size() == 0) {
+//                repo.deleteLocationData();
+//            } else {
+//                String tempAddresses = String.join("/", addresses);
+//                String tempTimestamps = String.join("/", timestamps);
+//                LocationsModel temp = new LocationsModel(tempTimestamps, tempAddresses);
+//                Log.d(TAG, "provjera timestamps " + temp.toString());
+//                repo.insertData(temp);
+//            }
+//        }
+//    }
 
     public LiveData<Boolean> getAreLocationsPopulated(){
         return areLocationsPopulated;

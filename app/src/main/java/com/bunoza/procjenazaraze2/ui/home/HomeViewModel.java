@@ -35,7 +35,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     private final String TAG = "HomeViewModel";
     Repository repo;
-    Observer<LocationsModel> observerLocation;
+    Observer<List<LocationsModel>> observerLocation;
     Observer<CovidDB> observerCovid;
     Observer<List<User>> observerUser;
     MutableLiveData<String> lastLocation;
@@ -43,7 +43,7 @@ public class HomeViewModel extends AndroidViewModel {
     MutableLiveData<Integer> covidZup;
     MutableLiveData<User> user;
     MutableLiveData<Double> approximation;
-    Observer<LocationsModel> observer;
+    Observer<List<LocationsModel>> observer;
     Observer<List<Approximation>> approxObserver;
     MutableLiveData<List<Approximation>> lastApproximations;
     SharedPreferences sharedPreferences;
@@ -61,49 +61,30 @@ public class HomeViewModel extends AndroidViewModel {
         context = application.getApplicationContext();
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
 
-        observerLocation = new Observer<LocationsModel>() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
-            @Override
-            public void onChanged(LocationsModel locationsModel) {
-                if(repo.getLocationsDead() != null){
-                    lastLocation.setValue("Zadnja lokacija:  " + (Arrays.asList(repo.getLocationsDead().address.split(",")).get(0)));
-//                    checkTimestamps();
-                    setNewApproximation();
-                }
-            }
-        };
-        observerCovid = new Observer<CovidDB>() {
-            @Override
-            public void onChanged(CovidDB covidDB) {
-                if(covidDB != null){
-                    covidHr.setValue(covidDB.hr_zarazeni);
-                    covidZup.setValue(covidDB.zup_zarazeni);
-                }
-            }
-        };
-
-        observerUser = new Observer<List<User>>() {
-            @Override
-            public void onChanged(List<User> users) {
-                user.setValue(users.get(0));
+        observerLocation = locationsModel -> {
+            if(repo.getLocationsDead() != null && repo.getLocationsDead().size() > 0){
+                lastLocation.setValue("Zadnja lokacija:  " + repo.getLocationsDead().get(repo.getLocationsDead().size()-1).address);
                 setNewApproximation();
             }
         };
-        observer = new Observer<LocationsModel>() {
-            @Override
-            public void onChanged(LocationsModel locationsModel) {
-                if(locationsModel != null){
-                    setNewApproximation();
-                }
+        observerCovid = covidDB -> {
+            if(covidDB != null){
+                covidHr.setValue(covidDB.hr_zarazeni);
+                covidZup.setValue(covidDB.zup_zarazeni);
             }
         };
 
-        approxObserver = new Observer<List<Approximation>>() {
-            @Override
-            public void onChanged(List<Approximation> approximations) {
-                lastApproximations.setValue(approximations);
+        observerUser = users -> {
+            user.setValue(users.get(0));
+            setNewApproximation();
+        };
+        observer = locationsModel -> {
+            if(locationsModel != null){
+                setNewApproximation();
             }
         };
+
+        approxObserver = approximations -> lastApproximations.setValue(approximations);
 
         repo.getLocations().observeForever(observer);
         repo.getLocations().observeForever(observerLocation);
@@ -112,28 +93,28 @@ public class HomeViewModel extends AndroidViewModel {
         repo.getLatestApproximations().observeForever(approxObserver);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
-    public void checkTimestamps(){
-        if(repo.getLocationsDead() != null){
-            List<String> addresses = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
-            List<String> timestamps = new ArrayList<>(Arrays.asList(repo.getLocationsDead().timestamp.split("/")));
-            for (int i = addresses.size() - 1; i >= 0; i--) {
-                if ((new Date().getTime() - Long.parseLong(timestamps.get(i))) > Long.parseLong(sharedPreferences.getString("deleteInterval", "43200000"))) {
-                    addresses.remove(i);
-                    timestamps.remove(i);
-                }
-            }
-            if (addresses.size() == 0) {
-                repo.deleteLocationData();
-            } else {
-                String tempAddresses = String.join("/", addresses);
-                String tempTimestamps = String.join("/", timestamps);
-                LocationsModel temp = new LocationsModel(tempTimestamps, tempAddresses);
-                Log.d(TAG, "fn_update: db!=null " + temp.toString());
-                repo.insertData(temp);
-            }
-        }
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.O)
+//    public void checkTimestamps(){
+//        if(repo.getLocationsDead() != null){
+//            List<String> addresses = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
+//            List<String> timestamps = new ArrayList<>(Arrays.asList(repo.getLocationsDead().timestamp.split("/")));
+//            for (int i = addresses.size() - 1; i >= 0; i--) {
+//                if ((new Date().getTime() - Long.parseLong(timestamps.get(i))) > Long.parseLong(sharedPreferences.getString("deleteInterval", "43200000"))) {
+//                    addresses.remove(i);
+//                    timestamps.remove(i);
+//                }
+//            }
+//            if (addresses.size() == 0) {
+//                repo.deleteLocationData();
+//            } else {
+//                String tempAddresses = String.join("/", addresses);
+//                String tempTimestamps = String.join("/", timestamps);
+//                LocationsModel temp = new LocationsModel(tempTimestamps, tempAddresses);
+//                Log.d(TAG, "fn_update: db!=null " + temp.toString());
+//                repo.insertData(temp);
+//            }
+//        }
+//    }
 
     public void setNewApproximation(){
         double sum = 0;
@@ -147,47 +128,32 @@ public class HomeViewModel extends AndroidViewModel {
                 sum += 4;
             }
         }
-
-
         if(user.getValue() != null) {
             try {
-//                Date date = format.parse(user.getValue().datum);
                 List<String> datumi = Arrays.asList(user.getValue().datum.split("/"));
-                age = getAge(Integer.parseInt(datumi.get(2)), Integer.parseInt(datumi.get(1)), Integer.parseInt(datumi.get(0)));
-
+                age = getAge(Integer.parseInt(datumi.get(2)), Integer.parseInt(datumi.get(1)),
+                        Integer.parseInt(datumi.get(0)));
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
             if (age < 15) {
-                sum += 5;
-            } else if (age < 30) {
-                sum += 10;
-            } else if (age < 45) {
-                sum += 15;
-            } else if (age < 60) {
-                sum += 20;
-            } else {
+                sum += 5;  } else if (age < 30) {
+                sum += 10; } else if (age < 45) {
+                sum += 15; } else if (age < 60) {
+                sum += 20; } else {
                 sum += 25;
             }
-//            Log.d(TAG, "setNewApproximation: " + age);
-
             if (user.getValue().pusenje) {
                 sum += 10;
-            }
-            if (user.getValue().astma) {
-                sum += 5;
             }
             if (user.getValue().lijekovi) {
                 sum += 15;
             }
-
-            List<String> list = new ArrayList<String>(Arrays.asList(context.getResources().getStringArray(R.array.poslovi_array)));
-//            Log.d(TAG, "index: " + Arrays.toString(context.getResources().getStringArray(R.array.poslovi_array)));
+            List<String> list = new ArrayList<String>(Arrays.asList(context.getResources()
+                    .getStringArray(R.array.poslovi_array)));
             int index = list.indexOf(user.getValue().posao)  ;
-//            Log.d(TAG, "index: " + index);
-            sum += Integer.parseInt(Arrays.asList(context.getResources().getStringArray(R.array.posloviValues_array)).get(index));
-//            Log.d(TAG, "poslije posla: " + sum);
+            sum += Integer.parseInt(Arrays.asList(context.getResources()
+                    .getStringArray(R.array.posloviValues_array)).get(index));
         }
 
         if(covidZup.getValue() != null){
@@ -195,7 +161,7 @@ public class HomeViewModel extends AndroidViewModel {
         }
 
         if(repo.getLocationsDead() != null){
-            List<String> list = new ArrayList<>(Arrays.asList(repo.getLocationsDead().address.split("/")));
+            ArrayList<LocationsModel> list = new ArrayList<>(repo.getLocationsDead());
             sum *= list.size();
             if(list.size() == 1 || list.size() == 0){
                 sum = 0;
@@ -203,38 +169,29 @@ public class HomeViewModel extends AndroidViewModel {
         }else {
             sum = 0;
         }
-        if(sum >= 999.99){
-            sum = 999.90;
+        sum /= 200.0 /3;
+        sum = (1)/(1+Math.exp(-(-3.5+(sum))));
+        if(sum >= 0.999){
+            sum = 0.999;
         }
-        sum /=10;
-        approximation.setValue(sum);
-
-
+        approximation.setValue(sum*100);
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String dateString = formatter.format(new Date(Calendar.getInstance().getTimeInMillis()));
-        Log.d(TAG, "setNewApproximation: " + dateString + " je datum");
-//        Log.d(TAG, "setNewApproximation: " + repo.getApproxDead().get(0).date);
         if(repo.getApproxDead().size() > 0){
             if(!dateString.equals(repo.getApproxDead().get(repo.getApproxDead().size()-1).date)){
-                Log.d(TAG, "setNewApproximation: "+ "razlicit datum");
                 repo.deleteLocationData();
                 sum = 0;
                 repo.insertApprox(new Approximation(sum, dateString));
-            }else if(dateString.equals(repo.getApproxDead().get(repo.getApproxDead().size()-1).date) && sum > repo.getApproxDead().get(repo.getApproxDead().size()-1).value){
+            }else if(dateString.equals(repo.getApproxDead().get(repo.getApproxDead().size()-1).date)
+                    && sum > repo.getApproxDead().get(repo.getApproxDead().size()-1).value){
                 repo.deleteLastApproximation();
-                Log.d(TAG, "setNewApproximation: "+ "isti datum i veci iznos");
                 repo.insertApprox(new Approximation(sum, dateString));
-            }else{
-
             }
         }else {
             repo.insertApprox(new Approximation(sum, dateString));
-            Log.d(TAG, "setNewApproximation: "+ "approx umetnut");
         }
-
         repo.checkApproxCount();
-
     }
 
     private int getAge(int year, int month, int day){

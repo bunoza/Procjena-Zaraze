@@ -19,13 +19,6 @@ public interface UserDao {
     @Query("SELECT * FROM user")
     LiveData<List<User>> getAll();
 
-//    @Query("SELECT * FROM user WHERE id IN (:userIds)")
-//    List<User> loadAllByIds(int[] userIds);
-
-//    @Query("SELECT * FROM user WHERE Ime LIKE :first AND " +
-//            "Prezime LIKE :last LIMIT 1")
-//    User findByName(String first, String last);
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(User user);
 
@@ -35,3 +28,5 @@ public interface UserDao {
     @Query("SELECT COUNT(*) FROM user")
     int getElementCount();
 }
+
+

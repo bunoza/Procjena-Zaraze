@@ -5,26 +5,15 @@
     <string name="title_location">Lokacije</string>
     <!-- Preference Titles -->
     <string name="lokacija">Lokacija</string>
-    <string name="sync_header">Sync</string>
 
     <!-- Messages Preferences -->
-    <string name="signature_title">Your signature</string>
-    <string name="reply_title">Default reply action</string>
 
     <!-- Sync Preferences -->
-    <string name="sync_title">Sync email periodically</string>
-    <string name="attachment_title">Download incoming attachments</string>
-    <string name="attachment_summary_on">Automatically download attachments for incoming emails
-    </string>
-    <string name="attachment_summary_off">Only download attachments when manually requested</string>
 
-    <string name="title_activity_scrolling">Unos podataka</string>
-    <string name="action_settings">Settings</string>
     <string name="ime">Ime</string>
     <string name="prezime">Prezime</string>
     <string name="m">M</string>
     <string name="z">Ž</string>
-    <string name="ne_elim_se_izjasniti">Ne želim se izjasniti</string>
     <string name="spol">Spol:</string>
     <string name="datum_ro_enja">Datum rođenja:</string>
     <string name="pu_enje">Pušite?</string>
@@ -34,7 +23,6 @@
     <string name="koristite_lijekove_koji_naru_avaju_imunitet">Koristite lijekove koji narušavaju imunitet?</string>
     <string name="posao">Posao:</string>
     <string name="nastavi">Nastavi</string>
-    <string name="dobar_dan">Dobar dan, %1$s</string>
     <string name="slucajevi_u_hr">"Broj novozaraženih: %1$d"</string>
     <string name="ozdravljeni_hr">"Broj ozdravljenih: %1$d"</string>
     <string name="umrli_hr">"Broj umrlih: %1$d"</string>
@@ -43,12 +31,15 @@
     <string name="umrli_obz">Broj umrlih: %1$d</string>
     <string name="u_itavanje_podataka">Učitavanje podataka</string>
     <string name="odaberi_upaniju">Odaberi županiju:</string>
-    <string name="notification_title">Procjena zaraze</string>
-    <string name="notification_message">Praćenje lokacije u tijeku</string>
 
     <string name="nizak_prosjek">Preporuka: Samo tako nastavi!</string>
     <string name="medium_prosjek">Preporuka: Trebao bi manje izlaziti.</string>
     <string name="high_prosjek">Preporuka: Potrebno je manje izlaziti i održavati socijalnu distancu.</string>
+
+    <string name = "gps_not_available">Za dohvaćanje lokacije potrebno je upaliti GPS</string>
+    <string name = "upute_message">Kako bi se lokacije prikazivale potrebno je omogućiti dohvaćanje lokacije u postavkama. Pritiskom na lokaciju, pokreću se Google karte koje traže pritisnutu lokaciju.</string>
+    <string name = "upute_title">Upute</string>
+    <string name = "nemoguce_pokrenuti">Nije moguće pokrenuti Google Maps</string>
 
 
     <string-array name="poslovi_array">

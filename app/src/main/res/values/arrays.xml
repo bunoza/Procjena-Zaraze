@@ -19,17 +19,4 @@
 
     </string-array>
 
-    <string-array name="delete_interval">
-        <item>3 sekunde</item>
-        <item>12 sati</item>
-        <item>24 sati</item>
-        <item>48 sati</item>
-    </string-array>
-
-    <string-array name="delete_intervalValue">
-        <item>3000</item>
-        <item>43200000</item>
-        <item>86400000</item>
-        <item>172800000</item>
-    </string-array>
 </resources>

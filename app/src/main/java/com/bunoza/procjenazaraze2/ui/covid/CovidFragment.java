@@ -56,53 +56,41 @@ public class CovidFragment extends Fragment {
 
         initUI(view);
 
-
-        covidViewModel.getRepository().getShouldSetRefreshFalse().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if(aBoolean){
-                    if(swipeRefreshLayout.isRefreshing()){
-                        swipeRefreshLayout.setRefreshing(false);
-                    }
-                }
-            }
-        });
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-
-                if(getActivity() != null){
-                    ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-                    NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-                    isConnected = activeNetwork != null &&
-                            activeNetwork.isConnectedOrConnecting();
-                }
-                if(isConnected) {
-                    covidViewModel.getRepository().getData();
-                }else{
+        covidViewModel.getRepository().getShouldSetRefreshFalse().observe(getViewLifecycleOwner(),
+                aBoolean -> {
+            if(aBoolean){
+                if(swipeRefreshLayout.isRefreshing()){
                     swipeRefreshLayout.setRefreshing(false);
-                    Toast.makeText(getContext(), "Nemoguć pristup internetu", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
-
-
-
-        covidViewModel.getRepository().getLatestCases().observe(getViewLifecycleOwner(), new Observer<CovidDB>() {
-            @Override
-            public void onChanged(CovidDB covidDB) {
-                if(covidDB != null){
-                    tvHrSlucajevi.setText(String.format(getString(R.string.slucajevi_u_hr), covidDB.hr_zarazeni));
-                    tvHrIzlijeceni.setText(String.format(getString(R.string.ozdravljeni_hr), covidDB.hr_izlijeceni));
-                    tvHrUmrli.setText(String.format(getString(R.string.umrli_hr), covidDB.hr_umrli));
-                    tvZupSlucajevi.setText(String.format(getString(R.string.zarazeni_obz), covidDB.zup_zarazeni));
-                    tvZupIzlijeceni.setText(String.format(getString(R.string.ozdravljeni_obz), covidDB.zup_izlijeceni));
-                    tvZupUmrli.setText(String.format(getString(R.string.umrli_obz), covidDB.zup_umrli));
-                }
-                swipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setOnRefreshListener(() -> {
+            if(getActivity() != null){
+                ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(
+                        Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+                isConnected = activeNetwork != null && activeNetwork.isConnectedOrConnecting();
             }
+            if(isConnected) {
+                covidViewModel.getRepository().getData();
+            }else{
+                swipeRefreshLayout.setRefreshing(false);
+                Toast.makeText(getContext(), "Nemoguć pristup internetu", Toast.LENGTH_SHORT)
+                        .show();
+            }
+        });
+
+        covidViewModel.getRepository().getLatestCases().observe(getViewLifecycleOwner(), covidDB ->
+        {
+            if(covidDB != null){
+                tvHrSlucajevi.setText(String.format(getString(R.string.slucajevi_u_hr), covidDB.hr_zarazeni));
+                tvHrIzlijeceni.setText(String.format(getString(R.string.ozdravljeni_hr), covidDB.hr_izlijeceni));
+                tvHrUmrli.setText(String.format(getString(R.string.umrli_hr), covidDB.hr_umrli));
+                tvZupSlucajevi.setText(String.format(getString(R.string.zarazeni_obz), covidDB.zup_zarazeni));
+                tvZupIzlijeceni.setText(String.format(getString(R.string.ozdravljeni_obz), covidDB.zup_izlijeceni));
+                tvZupUmrli.setText(String.format(getString(R.string.umrli_obz), covidDB.zup_umrli));
+            }
+            swipeRefreshLayout.setRefreshing(false);
         });
     }
 
@@ -118,16 +106,16 @@ public class CovidFragment extends Fragment {
         tvZupUmrli = view.findViewById(R.id.tvCovidZupanijaUmrli);
         swipeRefreshLayout = view.findViewById(R.id.swipe);
         details = view.findViewById(R.id.btnWeb);
-        details.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.koronavirus.hr/podaci/489"));
-                startActivity(browserIntent);
-            }
+
+        details.setOnClickListener(view1 -> {
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri
+                    .parse("https://www.koronavirus.hr/podaci/489"));
+            startActivity(browserIntent);
         });
 
         zupanijeSpinner = view.findViewById(R.id.spinnerZupanija);
-        zupanijeSpinner.setSelection(Integer.parseInt(sharedPreferences.getString("zupanija", "10")));
+        zupanijeSpinner.setSelection(Integer.parseInt(sharedPreferences
+                .getString("zupanija", "10")));
         zupanijeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -136,7 +124,6 @@ public class CovidFragment extends Fragment {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
             }
         });
     }

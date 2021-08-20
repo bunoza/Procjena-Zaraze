@@ -28,9 +28,6 @@ public class User {
     @ColumnInfo(name="Pusenje")
     public boolean pusenje;
 
-    @ColumnInfo(name="Astma")
-    public boolean astma;
-
     @ColumnInfo(name="Lijekovi")
     public boolean lijekovi;
 
@@ -85,14 +82,6 @@ public class User {
         this.pusenje = pusenje;
     }
 
-    public Boolean getAstma() {
-        return astma;
-    }
-
-    public void setAstma(Boolean astma) {
-        this.astma = astma;
-    }
-
     public Boolean getLijekovi() {
         return lijekovi;
     }
@@ -109,14 +98,13 @@ public class User {
         this.posao = posao;
     }
 
-    public User(String ime, String prezime, char spol, String datum, Boolean pusenje, Boolean astma, Boolean lijekovi, String posao) {
+    public User(String ime, String prezime, char spol, String datum, Boolean pusenje, Boolean lijekovi, String posao) {
         this.id = 8;
         this.ime = ime;
         this.prezime = prezime;
         this.spol = spol;
         this.datum = datum;
         this.pusenje = pusenje;
-        this.astma = astma;
         this.lijekovi = lijekovi;
         this.posao = posao;
     }
@@ -129,7 +117,6 @@ public class User {
                 ", spol=" + spol +
                 ", datum='" + datum + '\'' +
                 ", pusenje=" + pusenje +
-                ", astma=" + astma +
                 ", lijekovi=" + lijekovi +
                 ", posao='" + posao + '\'' +
                 '}';

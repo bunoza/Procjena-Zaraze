@@ -33,6 +33,7 @@ import com.bunoza.procjenazaraze2.adapter.RecyclerAdapter;
 import com.bunoza.procjenazaraze2.model.LocationsModel;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class LocationFragment extends Fragment implements ClickListener{
 
@@ -54,33 +55,25 @@ public class LocationFragment extends Fragment implements ClickListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setHasOptionsMenu(true);
-
         textView = view.findViewById(R.id.tvAdrese);
         recycler = view.findViewById(R.id.rvRecycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recycler.setLayoutManager(linearLayoutManager);
         adapter = new RecyclerAdapter(this);
         recycler.setAdapter(adapter);
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(),
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(requireContext(),
                 linearLayoutManager.getOrientation());
         recycler.addItemDecoration(dividerItemDecoration);
 
-        locationViewModel.getAreLocationsPopulated().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean aBoolean) {
-                if (aBoolean){
-                    textView.setVisibility(View.GONE);
-                }else{
-                    textView.setVisibility(View.VISIBLE);
-                    textView.setText("Za dohvaćanje lokacije potrebno je upaliti GPS");
-                }
+        locationViewModel.getAreLocationsPopulated().observe(getViewLifecycleOwner(), aBoolean -> {
+            if (aBoolean){
+                textView.setVisibility(View.GONE);
+            }else{
+                textView.setVisibility(View.VISIBLE);
+                textView.setText(getResources().getString(R.string.gps_not_available));
             }
         });
-
-
-
     }
 
     @Override
@@ -93,13 +86,10 @@ public class LocationFragment extends Fragment implements ClickListener{
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 
         new AlertDialog.Builder(getContext())
-                .setTitle("Upute")
-                .setMessage("Kako bi se lokacije prikazivale potrebno je omogućiti dohvaćanje lokacije u postavkama. " +
-                        "Pritiskom na lokaciju, pokreću se Google karte koje traže pritisnutu lokaciju. ")
+                .setTitle(getResources().getString(R.string.upute_title))
+                .setMessage(getResources().getString(R.string.upute_message))
                 .setPositiveButton(android.R.string.yes, null)
-//                .setIcon(R.drawable.ic_baseline_info_24)
                 .show();
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -111,7 +101,8 @@ public class LocationFragment extends Fragment implements ClickListener{
             mapIntent.setPackage("com.google.android.apps.maps");
             startActivity(mapIntent);
         }catch(Exception e){
-            Toast.makeText(getContext(), "Nije moguće pokrenuti Google Maps", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), getResources().getString(R.string.nemoguce_pokrenuti),
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -119,6 +110,5 @@ public class LocationFragment extends Fragment implements ClickListener{
     @Override
     public void onResume() {
         super.onResume();
-//        locationViewModel.checkTimestamps();
     }
 }

@@ -20,8 +20,7 @@ import com.bunoza.procjenazaraze2.model.LocationsModel;
 import com.bunoza.procjenazaraze2.model.User;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
@@ -55,7 +54,6 @@ public class Repository {
     public static Repository getInstance(){
         if(repository == null){
             repository = new Repository();
-
         }
 
         return repository;
@@ -102,7 +100,7 @@ public class Repository {
 
     public void deleteLocationData(){
         if(db.locationsDao().getAll() != null)
-        db.locationsDao().delete(db.locationsDao().getAll());
+        db.locationsDao().eraseTableData();
     }
 
     public void storeData(int spinnerItemPosition){
@@ -209,7 +207,7 @@ public class Repository {
 
 
     public void insertData(LocationsModel locationsModel){
-        Log.d(TAG, "insertData: " + locationsModel.toString());
+        Log.d(TAG, "insertData: " + locationsModel.address);
         db.locationsDao().insert(locationsModel);
     }
 
@@ -221,11 +219,15 @@ public class Repository {
         return db.approxDao().getAllLive();
     }
 
-    public LiveData<LocationsModel> getLocations(){
+    public void deleteLocation(LocationsModel locationsModel){
+        db.locationsDao().delete(locationsModel);
+    }
+
+    public LiveData<List<LocationsModel>> getLocations(){
             return db.locationsDao().getAllLive();
     }
-    public LocationsModel getLocationsDead(){
-        return db.locationsDao().getAll();
+    public ArrayList<LocationsModel> getLocationsDead(){
+        return new ArrayList<>(db.locationsDao().getAll());
     }
     public LiveData<Boolean> getShouldSetRefreshFalse(){
         return shouldSetRefreshingFalse;
